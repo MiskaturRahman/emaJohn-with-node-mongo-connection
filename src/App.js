@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import Shop from './components/Shop/Shop';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,7 +23,7 @@ export const UserContext = createContext();
 function App(props) {
   const [loggedInUser, setLoggedInUser] = useState({});
   return (
-    <UserContext.Provider value = {[loggedInUser, setLoggedInUser]}>
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
       <h3>email: {loggedInUser.email}</h3>
       <Router>
         <Header></Header>
