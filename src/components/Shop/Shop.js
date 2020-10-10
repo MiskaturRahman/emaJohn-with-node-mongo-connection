@@ -9,24 +9,30 @@ import { Link } from 'react-router-dom';
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+    const [loading, setLoading] = useState(true);
+    document.title = "Shop more";
 
     useEffect(() => {
         fetch('http://localhost:5000/products')
-            .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(res => res.json())
+            .then(data => {
+                setProducts(data)
+                setLoading(false);
+            })
     }, [])
 
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        fetch('http://localhost:5000/productByKeys', {
+        fetch('http://localhost:5000/productsByKeys', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(productKeys)
         })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => setCart(data))
-
     }, [])
 
     const handleAddProduct = (product) => {
@@ -52,7 +58,7 @@ const Shop = () => {
         <div className="twin-container">
             <div className="product-container">
                 {
-                    products.map(pd => <Product
+                    loading ? <p>loading...</p> : products.map(pd => <Product
                         key={pd.key}
                         showAddToCart={true}
                         handleAddProduct={handleAddProduct}
